@@ -20,6 +20,7 @@ public class Main {
         b2.willCollide(b3);
 
 
+
     }
 
 
@@ -33,7 +34,7 @@ class Ball {
     private double speed;
     private double angleOfSpeedWithX;
     private double addedTime;
-    public static double time;
+    private static double time;
     private String name;
 
     public String getName() {
@@ -49,7 +50,7 @@ class Ball {
         this.name = name;
     }
 
-    public static void updateTime(double newTime) {
+     static void updateTime(double newTime) {
         time += newTime;
     }
 
