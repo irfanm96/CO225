@@ -79,10 +79,10 @@ public class Ball {
 
         this.setCurrentCoordinates(this);
         this.setCurrentCoordinates(b);
-
-        double angleR = this.calculateRelativeVelocityAngle(this, b);
-        double angleC = this.calculateGradientAngle(this, b);
-        boolean check = this.checkCollision(angleC, angleR);
+//
+//        double angleR = this.calculateRelativeVelocityAngle(this, b);
+//        double angleC = this.calculateGradientAngle(this, b);
+        boolean check = this.checkCollision(this, b);
 
         if (check) {
             System.out.println("collide");
@@ -94,56 +94,61 @@ public class Ball {
         System.out.println("will Not collide");
     }
 
-    private double calculateRelativeVelocityAngle(Ball b1, Ball b2) {
+//    private double calculateRelativeVelocityAngle(Ball b1, Ball b2) {
+//
+//        //stop b1
+//        double ang1 = b1.getAngleOfSpeedWithX();
+//        double ang2 = b2.getAngleOfSpeedWithX();
+//
+//        double vH = (b2.getSpeed() * Math.cos(Math.toRadians(ang2))) - (b1.getSpeed() * Math.cos(Math.toRadians(ang1)));
+//        double vV = (b2.getSpeed() * Math.sin(Math.toRadians(ang2))) - (b1.getSpeed() * Math.sin(Math.toRadians(ang1)));
+//
+//        if (vH == 0) {
+//            if (vV == 0) {
+//                return 0;
+//            }
+//            if (vV > 0) {
+//                return 90.0;
+//            }
+//            return -90.0;
+//        }
+//
+//        return Math.toDegrees(Math.atan(vV / vH));
+//
+//    }
 
-        //stop b1
-        double ang1 = b1.getAngleOfSpeedWithX();
-        double ang2 = b2.getAngleOfSpeedWithX();
+//    private double calculateGradientAngle(Ball b1, Ball b2) {
+//
+//
+//        double y = (b1.getY() - b2.getY());
+//        double x = (b1.getX() - b2.getX());
+//
+//        if (x == 0) {
+//            if (y == 0) {
+//                return 0.0;
+//            }
+//            if (y > 0) {
+//                return 90.0;
+//            }
+//            return -90.0;
+//        }
+//
+//
+//        double gradient = y / x;
+//
+//        return Math.toDegrees(Math.atan(gradient));
+//
+//
+//    }
 
-        double vH = (b2.getSpeed() * Math.cos(Math.toRadians(ang2))) - (b1.getSpeed() * Math.cos(Math.toRadians(ang1)));
-        double vV = (b2.getSpeed() * Math.sin(Math.toRadians(ang2))) - (b1.getSpeed() * Math.sin(Math.toRadians(ang1)));
+    private boolean checkCollision(Ball b1, Ball b2) {
 
-        if (vH == 0) {
-            if (vV == 0) {
-                return 0;
-            }
-            if (vV > 0) {
-                return 90.0;
-            }
-            return -90.0;
-        }
+        double x1=b1.getX();
+        double x2=b2.getX();
+        double y1=b1.getY();
+        double y2=b2.getY();
 
-        return Math.toDegrees(Math.atan(vV / vH));
-
-    }
-
-    private double calculateGradientAngle(Ball b1, Ball b2) {
-
-
-        double y = (b1.getY() - b2.getY());
-        double x = (b1.getX() - b2.getX());
-
-        if (x == 0) {
-            if (y == 0) {
-                return 0.0;
-            }
-            if (y > 0) {
-                return 90.0;
-            }
-            return -90.0;
-        }
-
-
-        double gradient = y / x;
-
-        return Math.toDegrees(Math.atan(gradient));
-
-
-    }
-
-    private boolean checkCollision(double angle1, double angle2) {
-
-        if (angle1 == angle2) {
+        if ((x1==x2) && (y1==y2)) {
             return true;
         }
         return false;
