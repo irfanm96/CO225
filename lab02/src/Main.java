@@ -7,12 +7,17 @@ public class Main {
     public static void main(String[] args) {
 
         Ball.updateTime(0);
-        Ball b1 = new Ball(0, 0, 10, 0, Ball.getTime(), "B1");
-        Ball b2 = new Ball(45, 0, 1, 0, Ball.getTime(), "B2");
+        Ball b1 = new Ball(0.0, 1.0, 10, 45, Ball.getTime(), "B1");
+        Ball.updateTime(5);
+
+        Ball b2 = new Ball(0.0, 1.0, 20, 45, Ball.getTime(), "B2");
+        Ball.updateTime(5);
 
         b2.willCollide(b1);
-        Ball.updateTime(5);
-        b2.willCollide(b1);
+        Ball b3 = new Ball(-10.0, 5.0, 3, 30, Ball.getTime(), "B3");
+
+        Ball.updateTime(20);
+        b2.willCollide(b3);
 
 
     }
