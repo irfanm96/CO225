@@ -1,9 +1,19 @@
 class Main {
-    public static int[][] a = { {3, -2, 5}, {3, 0, 4} };
+//    public static int[][] a = { {3, -2, 5}, {3, 0, 4} };
 
-    public static int[][] b = { {2, 3}, {-9, 0}, {0, 4} };
+//    public static int[][] b = { {2, 3}, {-9, 0}, {0, 4} };
 
-    private  static int numberOfThreads=1; // note that the number of threads cannot be zero or less than zero
+    public static int [][] a= {{45, 8, 7, 4},
+            {-7, 0, 6, 1},
+            {3, 56, 7, 8},
+            {95, 6, 1, 2},
+            {4, 56, 1, -5}};
+
+    public static int [][] b ={{1, 5, 7, 6, 7},
+            {8, 6, 5, 3, 5},
+            {6, 6, 1, 2, 5},
+            {5, 1, 5, 9, 0}};
+    private  static int numberOfThreads=5; // note that the number of threads cannot be zero or less than zero
     // method to print matrix
     public static void print_matrix(int[][] a) {
 

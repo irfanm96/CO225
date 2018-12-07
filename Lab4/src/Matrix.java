@@ -20,15 +20,13 @@ public class Matrix extends Thread {
     public Matrix(int start,int end ) { // need to change this, might need some information
     	this.start=start;
     	this.end=end;
-
-
     }
 
     public void run(){
-    	Matrix.multiply(a,b,this.start,this.end);
+    	Matrix.multiply(this.start,this.end);
 	}
 
-    public static  void multiply(int [][] a, int [][] b,int start,int end) {
+    public static  void multiply(int start,int end) {
 
 //	int x = a.length;
 	int y = b[0].length;
