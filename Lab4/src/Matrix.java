@@ -5,16 +5,14 @@ public class Matrix extends Thread {
     public static int [][] c;
     private int start,end;
 
-	public static void setA(int[][] a) {
+	public static void setMatrices(int [][]a ,int [][]b){
 		Matrix.a = a;
-	}
-
-	public static void setB(int[][] b) {
 		Matrix.b = b;
-	}
-	public static void setC(int x ,int y) {
+		int x = a.length;
+		int y = b[0].length;
 		Matrix.c = new int [x][y];
 	}
+
 	 /* You might need other variables as well */
 
     public Matrix(int start,int end ) { // need to change this, might need some information

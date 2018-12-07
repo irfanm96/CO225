@@ -35,11 +35,7 @@ class Main {
             System.out.println("Can not multiply");
             return;// return if cannot multiply
         }
-        Matrix.setA(a);
-        Matrix.setB(b);
-        int x = a.length;
-        int y = b[0].length;
-        Matrix.setC(x,y);
+        Matrix.setMatrices(a,b); //set up the matrices
         if(numberOfThreads>=a.length){
             numberOfThreads=a.length;
             System.out.println("too much of threads ,only "+numberOfThreads+" threads are enough");
