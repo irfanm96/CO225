@@ -12,6 +12,9 @@ public class Matrix extends Thread {
 	public static void setB(int[][] b) {
 		Matrix.b = b;
 	}
+	public static void setC(int x ,int y) {
+		Matrix.c = new int [x][y];
+	}
 	 /* You might need other variables as well */
 
     public Matrix(int start,int end ) { // need to change this, might need some information
@@ -22,32 +25,23 @@ public class Matrix extends Thread {
     }
 
     public void run(){
-    	Matrix.multiply(Matrix.a,Matrix.b,0,Matrix.a.length);
+    	Matrix.multiply(a,b,this.start,this.end);
 	}
 
-    public static void multiply(int [][] a, int [][] b,int start,int end) {
+    public static  void multiply(int [][] a, int [][] b,int start,int end) {
 
-	/* check if multipication can be done, if not 
-	 * return null 
-	 * allocate required memory 
-	 * return a * b
-	 */
-
-	int x = a.length;
+//	int x = a.length;
 	int y = b[0].length;
 	int z1 = a[0].length;
 
-	Matrix.c = new int [x][y];
-	int i, j, k, s; 
+	int i, j, k, s;
 
 	for(i=start; i<end; i++)
 	    for(j=0; j<y; j++) {
 		for(s=0, k=0; k<z1; k++) 
 		    s += a[i][k] * b[k][j];
-		Matrix.c[i][j] = s;
-	    }
-	    return;
-
+			Matrix.c[i][j]=s;
+		}
     }
 
 }
