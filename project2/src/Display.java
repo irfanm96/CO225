@@ -14,9 +14,14 @@ public class Display
     private  JTextArea textArea;
     private VisualServer server;
     private Map<String, StockItem> stockList=StockDB.stockList;
-    JButton OKButton = new JButton("OK");
+    JButton HButton = new JButton("History");
     private static String [] keys={"AAL","AAPL","ABAC"};
 
+    //Create the combo box, select item at index 4.
+//Indices start at 0, so 4 specifies the pig.
+    JComboBox symbols = new JComboBox(keys);
+   
+ public static Timer timer;
 
     public Display(VisualServer server) { 
         super(new GridBagLayout());
@@ -36,27 +41,37 @@ public class Display
         c.weighty = 1.0;
         add(scrollPane, c);
 
-	Timer timer = new Timer(500, this); 
+	timer = new Timer(500, this);
 	timer.start(); 
 
 	this.server = server;
-        OKButton.addActionListener(this);
-        this.add(OKButton);
+        HButton.addActionListener(this);
+        this.add(HButton);
+        symbols.setSelectedIndex(0);
+        symbols.addActionListener(this);
+        this.add(symbols);
+
     }
     
     public void actionPerformed(ActionEvent e) {
 
-        textArea.setText("");
-        if(stockList != null) {
-            for(int i=0 ; i<keys.length ;i++) {
-                textArea.append(keys[i] + "\t" + stockList.get(keys[i]) + "\n");
+        if(e.getSource()==timer) {
+            textArea.setText("");
+            if (stockList != null) {
+                for (int i = 0; i < keys.length; i++) {
+                    textArea.append(keys[i] + "\t" + stockList.get(keys[i]) + "\n");
+                }
+
+
+                //Make sure the new text is visible, even if there
+                //was a selection in the text area.
+                textArea.setCaretPosition(textArea.getDocument().getLength());
             }
-
-
-	    //Make sure the new text is visible, even if there
-	    //was a selection in the text area.
-	    textArea.setCaretPosition(textArea.getDocument().getLength());
-	}
+        }
+        if(e.getSource()==HButton){
+            System.out.println(symbols.getSelectedItem().toString());
+            new Display1(symbols.getSelectedItem().toString());
+        }
 
     }
 

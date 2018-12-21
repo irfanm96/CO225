@@ -10,26 +10,28 @@ import java.net.Socket;
 
 class ConnectionServer implements Runnable, ActionListener {
     // some constants 
-    public static final int WAIT_AUTH = 0;
-    public static final int GET_SYMBOL = 1;
-    public static final int GET_BID_PRICE = 2;
-    public static final int BID_ONE_MORE = 3;
+    public static final int WAIT_AUTH = 0; // initial case for getting Client Name
+    public static final int GET_SYMBOL = 1; // condition to get the symbol
+    public static final int GET_BID_PRICE = 2;// condition to get the bid price
+    public static final int BID_ONE_MORE = 3;// condition to check for another bid
     private static MainServer mainServer;
 
 
     // per connection variables
     private Socket mySocket; // connection socket per thread 
-    private int currentState;
-    private String clientName;
-    private String symbol;
-    private double bidPrice;
+    private int currentState; // variable to switch between states
+    private String clientName; // save client name
+    private String symbol; // get security symbol
+    private double bidPrice; // get bid price
     private PrintWriter out;
     private  int listLength=0;
-    private  Timer timer;
+    private  Timer timer; // timer to create an action event
 
 
 
     public void actionPerformed(ActionEvent e) {
+        //check wheather someone has already bidded;
+        //if so notify others about the bid
         if(StockDB.stockHistory.get(symbol)!=null) {
             int newLength = StockDB.stockHistory.get(symbol).size();
             StockHistory s = StockDB.stockHistory.get(symbol).get(newLength - 1);
@@ -48,10 +50,9 @@ class ConnectionServer implements Runnable, ActionListener {
         this.clientName = null;
         this.mainServer = mainServer;
         timer = new Timer(500, this);
-
-        // who created me. He should give some interface
     }
 
+    //function to handle many requests
     public boolean handleConnection(Socket socket) {
         this.mySocket = socket;
         Thread newThread = new Thread(this);
@@ -70,55 +71,56 @@ class ConnectionServer implements Runnable, ActionListener {
              this.out=out;
             String line, outline;
             currentState = WAIT_AUTH;
-            outline="WELCOME TO AUCTION SERVER\n";
-            printOut(outline);
-            outline="Type quit to exit\n";
-            printOut(outline);
-            outline="\nEnter Your Name: ";
+            outline="WELCOME TO AUCTION SERVER\nType quit to exit\nType quit to exit\n\nEnter Your Name: ";
             printOut(outline);
             out.flush();
+            //read inputs from the user
             for (line = in.readLine(); line != null && !line.equals("quit"); line = in.readLine()) {
+                //switch between states
                 switch (currentState) {
+                    //initial state to get user name
                         case WAIT_AUTH:
                             clientName = line;
                             outline = "Welcome " + clientName + "\nPlease Enter the security symbol\n";
                             printOut(outline);
                             currentState = GET_SYMBOL;
                             break;
+
+                    //state to get the symbol
                         case GET_SYMBOL:
                             timer.start();
                             symbol = line;
-                            System.out.println(line);
                             if (StockDB.keyExists(symbol)) {
                                 currentState = GET_BID_PRICE;
                                 outline = "You Are Bidding On " + line + "\n"+"Current stock Price is :" + StockDB.getPrice(symbol) + "\n"+"Enter Your bid amount:\n";
                                 printOut(outline);
-
                                 if(StockDB.stockHistory.get(symbol)!=null){
                                      listLength=StockDB.stockHistory.get(symbol).size();
                                  }
 
                             } else {
+                                //prompt user to give correct information
                                 currentState = GET_SYMBOL;
                                 outline = "Security Symbol does not exists,Enter a valid Symbol again\n";
                                 printOut(outline);
 
                             }
                             break;
+                            //state to get the bid price
                         case GET_BID_PRICE:
-                            bidPrice = Double.parseDouble(line);
+                            bidPrice = Double.parseDouble(line);//get price
 
                             if (bidPrice > StockDB.getPrice(symbol)) {
                                 StockDB.setPrice(symbol, bidPrice,clientName);
                                 outline = "Current stock Price is updated to :" + bidPrice + "\n"+"Are you willing to bid for one more item ? (Y/N)\n";
                                 printOut(outline);
-                                currentState=BID_ONE_MORE;
+                                currentState=BID_ONE_MORE;//go to state ,ask user preference of another bid
 
 
                             } else {
                                 outline = "Bid Price has to be higher ,Try Again\n";
                                 printOut(outline);
-                                currentState = GET_BID_PRICE;
+                                currentState = GET_BID_PRICE; // prompt user to provide higher price
                             }
 
                             break;
@@ -127,29 +129,30 @@ class ConnectionServer implements Runnable, ActionListener {
                             if(!line.equalsIgnoreCase("y") && !line.equalsIgnoreCase("n") ){
                                 outline="Please Type Y for Yes and N for NO \n ";
                                 printOut(outline);
-                                currentState=BID_ONE_MORE;
+                                currentState=BID_ONE_MORE; // prompt user to type only Y or N
                             }else{
+                                //exit
                                 if(line.equalsIgnoreCase("n")){
                                     outline="Thank You!";
                                     printOut(outline);
                                     out.close();
                                     in.close();
                                     this.mySocket.close();
-                                }else{
+                                }else{ //go for another bid
                                     outline="Enter the symbol to bid \n";
                                     printOut(outline);
-                                    currentState=GET_SYMBOL;
+                                    currentState=GET_SYMBOL;// get a symbol again
                                 }
 
                             }
-
                             break;
                         default:
                             System.out.println("Undefined state");
                             return;
                     }
-                }
                 out.flush();
+
+            }
             out.close();
             in.close();
             this.mySocket.close();
@@ -158,7 +161,7 @@ class ConnectionServer implements Runnable, ActionListener {
             System.out.println(e);
         }
     }
-
+    //method to print in output stream
     public void printOut(String msg ){
         this.out.print(msg);
     }
