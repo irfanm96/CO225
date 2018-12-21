@@ -36,7 +36,7 @@ public class Display1
 
         //Create and set up the window.
         JFrame frame = new JFrame("Stock History");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //Add contents to the window.
         frame.add(this);
 
