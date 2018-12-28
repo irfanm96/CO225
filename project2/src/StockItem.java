@@ -8,9 +8,6 @@ public class StockItem {
         this.price = price;
     }
 
-    public String getSecurityName() {
-        return securityName;
-    }
 
     @Override
     public String toString() {

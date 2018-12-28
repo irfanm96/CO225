@@ -38,7 +38,7 @@ class ConnectionServer implements Runnable, ActionListener {
             if (newLength > listLength && clientName!=s.client) {
                 listLength=newLength;
                 String outline = "\n"+s.client + " bidded " + s.price+"\n";
-                printOut(outline);
+                out.print(outline);
                 out.flush();
             }
         }
@@ -71,8 +71,8 @@ class ConnectionServer implements Runnable, ActionListener {
              this.out=out;
             String line, outline;
             currentState = WAIT_AUTH;
-            outline="WELCOME TO AUCTION SERVER\nType quit to exit\nType quit to exit\n\nEnter Your Name: ";
-            printOut(outline);
+            outline="WELCOME TO AUCTION SERVER\nType quit to exit\n\nEnter Your Name: ";
+            out.print(outline);
             out.flush();
             //read inputs from the user
             for (line = in.readLine(); line != null && !line.equals("quit"); line = in.readLine()) {
@@ -82,7 +82,7 @@ class ConnectionServer implements Runnable, ActionListener {
                         case WAIT_AUTH:
                             clientName = line;
                             outline = "Welcome " + clientName + "\nPlease Enter the security symbol\n";
-                            printOut(outline);
+                            out.print(outline);
                             currentState = GET_SYMBOL;
                             break;
 
@@ -93,7 +93,7 @@ class ConnectionServer implements Runnable, ActionListener {
                             if (StockDB.keyExists(symbol)) {
                                 currentState = GET_BID_PRICE;
                                 outline = "You Are Bidding On " + line + "\n"+"Current stock Price is :" + StockDB.getPrice(symbol) + "\n"+"Enter Your bid amount:\n";
-                                printOut(outline);
+                                out.print(outline);
                                 if(StockDB.stockHistory.get(symbol)!=null){
                                      listLength=StockDB.stockHistory.get(symbol).size();
                                  }
@@ -102,7 +102,7 @@ class ConnectionServer implements Runnable, ActionListener {
                                 //prompt user to give correct information
                                 currentState = GET_SYMBOL;
                                 outline = "Security Symbol does not exists,Enter a valid Symbol again\n";
-                                printOut(outline);
+                                out.print(outline);
 
                             }
                             break;
@@ -113,13 +113,13 @@ class ConnectionServer implements Runnable, ActionListener {
                             if (bidPrice > StockDB.getPrice(symbol)) {
                                 StockDB.setPrice(symbol, bidPrice,clientName);
                                 outline = "Current stock Price is updated to :" + bidPrice + "\n"+"Are you willing to bid for one more item ? (Y/N)\n";
-                                printOut(outline);
+                                out.print(outline);
                                 currentState=BID_ONE_MORE;//go to state ,ask user preference of another bid
 
 
                             } else {
                                 outline = "Bid Price has to be higher ,Try Again\n";
-                                printOut(outline);
+                                out.print(outline);
                                 currentState = GET_BID_PRICE; // prompt user to provide higher price
                             }
 
@@ -128,19 +128,19 @@ class ConnectionServer implements Runnable, ActionListener {
 
                             if(!line.equalsIgnoreCase("y") && !line.equalsIgnoreCase("n") ){
                                 outline="Please Type Y for Yes and N for NO \n ";
-                                printOut(outline);
+                                out.print(outline);
                                 currentState=BID_ONE_MORE; // prompt user to type only Y or N
                             }else{
                                 //exit
                                 if(line.equalsIgnoreCase("n")){
                                     outline="Thank You!";
-                                    printOut(outline);
+                                    out.print(outline);
                                     out.close();
                                     in.close();
                                     this.mySocket.close();
                                 }else{ //go for another bid
                                     outline="Enter the symbol to bid \n";
-                                    printOut(outline);
+                                    out.print(outline);
                                     currentState=GET_SYMBOL;// get a symbol again
                                 }
 
@@ -160,10 +160,6 @@ class ConnectionServer implements Runnable, ActionListener {
         catch (IOException e) {
             System.out.println(e);
         }
-    }
-    //method to print in output stream
-    public void printOut(String msg ){
-        this.out.print(msg);
     }
 }
 

@@ -12,10 +12,11 @@ import java.util.Map;
 public class Display 
     extends JPanel implements ActionListener { 
     private  JTextArea textArea;
-    private VisualServer server;
+    private MainServer server;
     private Map<String, StockItem> stockList=StockDB.stockList;
-    JButton HButton = new JButton("History");
-    private static String [] keys={"AAL","AAPL","ABAC"};
+    JButton HButton = new JButton("Show History");
+    private static String [] keys={"FB", "VRTU",
+            "MSFT", "GOOGL", "YHOO", "XLNX", "TSLA","TXN"};
 
     //Create the combo box, select item at index 4.
 //Indices start at 0, so 4 specifies the pig.
@@ -23,7 +24,7 @@ public class Display
    
  public static Timer timer;
 
-    public Display(VisualServer server) { 
+    public Display(MainServer server) { 
         super(new GridBagLayout());
 
 	textArea = new JTextArea(10, 50);
@@ -51,6 +52,7 @@ public class Display
         symbols.addActionListener(this);
         this.add(symbols);
 
+
     }
     
     public void actionPerformed(ActionEvent e) {
@@ -69,7 +71,6 @@ public class Display
             }
         }
         if(e.getSource()==HButton){
-            System.out.println(symbols.getSelectedItem().toString());
             new Display1(symbols.getSelectedItem().toString());
         }
 
@@ -81,13 +82,14 @@ public class Display
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	StockDB initialStocks = new StockDB("stocks.csv","Symbol","Security Name","Price");
-	VisualServer server = new VisualServer(MainServer.BASE_PORT,
+	MainServer server = new MainServer(MainServer.BASE_PORT,
 					       initialStocks);
         //Add contents to the window.
         frame.add(new Display(server));
 
+
         //Display the window.
-        frame.pack();
+        frame.setSize(new Dimension(500,400));
         frame.setVisible(true);
 
 	server.server_loop(); 

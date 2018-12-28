@@ -36,7 +36,7 @@ public class MainServer {
 	} catch(IOException e) { 
 	    System.out.println(e);
 	}
-    }// end server_loop 
+    }
 }
 
 

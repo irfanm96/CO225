@@ -35,14 +35,14 @@ public class Display1
         add(scrollPane, c);
 
         //Create and set up the window.
-        JFrame frame = new JFrame("Stock History");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JFrame f = new JFrame("Stock History of "+this.key);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //Add contents to the window.
-        frame.add(this);
+        f.add(this);
 
         //Display the window.
-        frame.pack();
-        frame.setVisible(true);
+        f.pack();
+        f.setVisible(true);
         timer.start();
 
 
