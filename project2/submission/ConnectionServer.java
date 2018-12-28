@@ -92,7 +92,7 @@ class ConnectionServer implements Runnable, ActionListener {
                             symbol = line;
                             if (StockDB.keyExists(symbol)) {
                                 currentState = GET_BID_PRICE;
-                                outline = "You Are Bidding On " + line + "\n"+"Current stock Price is :" + StockDB.getPrice(symbol) +"\nEnter Your Bid amount\n";
+                                outline = "You Are Bidding On " + line + "\n"+"Current stock Price is :" + StockDB.getPrice(symbol) + "\n"+"Enter Your bid amount:\n";
                                 out.print(outline);
                                 if(StockDB.stockHistory.get(symbol)!=null){
                                      listLength=StockDB.stockHistory.get(symbol).size();
@@ -108,16 +108,7 @@ class ConnectionServer implements Runnable, ActionListener {
                             break;
                             //state to get the bid price
                         case GET_BID_PRICE:
-
-                            try {
-                                bidPrice = Double.parseDouble(line);//get price
-                            }catch(NumberFormatException e){
-                               out.print("invalid input\n");
-                               out.flush();
-                               currentState=GET_BID_PRICE;
-                               break;
-
-                            }
+                            bidPrice = Double.parseDouble(line);//get price
 
                             if (bidPrice > StockDB.getPrice(symbol)) {
                                 StockDB.setPrice(symbol, bidPrice,clientName);
