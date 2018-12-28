@@ -6,6 +6,7 @@ Instructions for Using the Auction Serevr
 
 	To compile	: javac Display.java
 	To run		: java Display
+    	NOTE		: have the stocks.csv file in the current compiling directry,if not specify the path for thr file input
 
 ** GUI controls
 
