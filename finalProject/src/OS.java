@@ -9,6 +9,9 @@ public class OS {
 
     private CPU cpu;
 
+    private int start;
+    private int end;
+
     static String[] prog = {
 
             //load immediate
@@ -64,10 +67,11 @@ public class OS {
             BufferedReader b = new BufferedReader(new FileReader(f));
             String readLine = "";
             //this can be derived from the header file
-            int i=0;//starting address of the instruction memory location
+            int i=start=0;//starting address of the instruction memory location can be given by the file header as well
             while ((readLine = b.readLine()) != null) {
                 cpu.programMemory.addInstruction(i++,readLine);
             }
+            end=i;//can change this by the information in header
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +79,8 @@ public class OS {
     }
 
     //run the program from a point to point
-    public void runProgram(int start, int end){
+    public void runProgram(){
+            //can set the start and if needed if not default values will be applied
             cpu.executeProgram(start,end);
     }
 
@@ -83,12 +88,10 @@ public class OS {
     //test the OS
     public static void main(String [] args){
         OS myOS=new OS();
-        myOS.loadInstructions("sdsd");//should give the file name to be loaded
-        //can be loaded from the file header
-        int start=0;
-        int end=6;
 
-        myOS.runProgram(start,end);//execute only the required part as OS
+        myOS.loadInstructions("SHOULD GIVE THE PATH");//should give the file name to be loaded
+        //can be loaded from the file header
+        myOS.runProgram();//execute only the required part as OS
 
     }
 
