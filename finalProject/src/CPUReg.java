@@ -5,7 +5,7 @@ import java.io.IOException;
 public class CPUReg {
 
 
-   private static  int numOfReadWriteReg=7;
+   private static  int numOfReadWriteReg=30;
    private  ReadOnlyReg r0;
    private ReadWriteReg [] array;
 
@@ -23,7 +23,7 @@ public class CPUReg {
 
         int regNo=Character.getNumericValue(regNumber.charAt(1));
 
-        if(regNo>numOfReadWriteReg || !regNumber.startsWith("R") || regNumber.length()>2) {
+        if(regNo>numOfReadWriteReg || !regNumber.startsWith("R")) {
             throw  new IOException("Not a valid address");
         }
 
@@ -40,7 +40,7 @@ public class CPUReg {
         }else { // get value of all other registers
 
             try {
-                val=array[regNo].readReg();
+                val=array[regNo-1].readReg();
                 return val;
             } catch (IOException e) {
                 throw e;
@@ -54,7 +54,7 @@ public class CPUReg {
 
         int regNo=Character.getNumericValue(regNumber.charAt(1));
 
-        if(regNo>numOfReadWriteReg || !regNumber.startsWith("R") || regNumber.length()>2) {
+        if(regNo>numOfReadWriteReg || !regNumber.startsWith("R")) {
             throw  new IOException("Not a valid address");
         }
 
@@ -66,7 +66,7 @@ public class CPUReg {
             }
         }else { // try to write to  all other registers
             try {
-                array[regNo].writeReg(val);
+                array[regNo-1].writeReg(val);
             } catch (IOException e) {
                 throw e;
             }

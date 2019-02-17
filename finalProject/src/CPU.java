@@ -9,6 +9,10 @@ public class CPU {
     private RAM ram;
     private int programCounter;
 
+    public int getProgramCounter() {
+        return programCounter;
+    }
+
     public CPU() {
         this.programMemory = new ProgramMemory(50);
         this.regFile = new CPUReg();
@@ -48,7 +52,7 @@ public class CPU {
             }
         } catch (IOException e) {
 //            System.out.println(e);
-//            e.printStackTrace();
+            e.printStackTrace();
         }
 
 

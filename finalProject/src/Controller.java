@@ -13,17 +13,27 @@ public class Controller {
         cnt.put("ADD", new ADD());
         cnt.put("SUB", new SUB());
         cnt.put("MUL", new MUL());
-        cnt.put("LI", new LI());
         cnt.put("DIV", new DIV());
+
+        cnt.put("LI", new LI());
+
         cnt.put("AND", new AND());
         cnt.put("OR", new OR());
         cnt.put("XOR", new XOR());
+        cnt.put("NOR", new NOR());
+
         cnt.put("SRL", new SRL());
         cnt.put("SLL", new SLL());
+        cnt.put("SLT", new SLT());
+
+        cnt.put("ADDI", new ADDI());
+        cnt.put("SUBI", new SUBI());
 
         //J type instruction
         cnt.put("BEQ", new BEQ());
         cnt.put("BGT", new BGT());
+        cnt.put("J", new J());
+
 
         //I type instructions
         cnt.put("LW", new LW());
@@ -55,7 +65,17 @@ public class Controller {
         if (inst == null) throw new IOException("Cannot find instruction");
 
         try {
-            inst.executeBranch(args, cpu, regFile);
+            if(args[0].equalsIgnoreCase("jal")){
+                // save the current address before linking
+                regFile.writeReg("R31",cpu.getProgramCounter());
+                //execute the instruction
+                inst.executeBranch(args, cpu, regFile);
+                //come back to the next address stored in target register
+                cpu.setProgramCounter(regFile.readReg("R31")+1);
+            }else {
+                inst.executeBranch(args, cpu, regFile);
+            }
+
         } catch (IOException e) {
             throw e;
         }

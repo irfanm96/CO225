@@ -1,15 +1,18 @@
 import java.io.IOException;
 
-//class for unconditional jump instruction
-public class J implements Instruction, JTypeInstruction {
+public class JAL implements Instruction, JTypeInstruction {
+
     @Override
     public void execute(String[] args, CPUReg regFile) throws IOException {
         throw new IOException("Need a cpu input for J type instructions");
     }
 
-    //override the branch method in JType interface
+    //override executeBranch method in J Type instruction interface
     @Override
     public void executeBranch(String[] args, CPU cpu, CPUReg regFile) throws IOException {
-        cpu.setProgramCounter(Integer.parseInt(args[1]));
+        //set program counter to the link address
+        cpu.setProgramCounter(Integer.parseInt(args[3]));
     }
+
+
 }
