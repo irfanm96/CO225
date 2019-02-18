@@ -11,7 +11,7 @@ public class JAL implements Instruction, JTypeInstruction {
     @Override
     public void executeBranch(String[] args, CPU cpu, CPUReg regFile) throws IOException {
         //set program counter to the link address
-        cpu.setProgramCounter(Integer.parseInt(args[1]));
+        cpu.setProgramCounter(Integer.parseInt(args[3]));
     }
 
 
